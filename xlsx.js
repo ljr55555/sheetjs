@@ -8631,27 +8631,27 @@ function parse_EncInfoAgl(blob) {
 }
 
 /* [MS-OFFCRYPTO] 2.3.5.1 RC4 CryptoAPI Encryption Header */
-function parse_RC4CryptoHeader(blob, length) {
-	var o = {};
-	var vers = o.EncryptionVersionInfo = parse_CRYPTOVersion(blob, 4); length -= 4;
-	if(vers.Minor != 2) throw new Error('unrecognized minor version code: ' + vers.Minor);
-	if(vers.Major > 4 || vers.Major < 2) throw new Error('unrecognized major version code: ' + vers.Major);
-	o.Flags = blob.read_shift(4); length -= 4;
-	var sz = blob.read_shift(4); length -= 4;
-	o.EncryptionHeader = parse_EncryptionHeader(blob, sz); length -= sz;
-	o.EncryptionVerifier = parse_EncryptionVerifier(blob, length);
-	return o;
-}
-/* [MS-OFFCRYPTO] 2.3.6.1 RC4 Encryption Header */
-function parse_RC4Header(blob) {
-	var o = {};
-	var vers = o.EncryptionVersionInfo = parse_CRYPTOVersion(blob, 4);
-	if(vers.Major != 1 || vers.Minor != 1) throw 'unrecognized version code ' + vers.Major + ' : ' + vers.Minor;
-	o.Salt = blob.read_shift(16);
-	o.EncryptedVerifier = blob.read_shift(16);
-	o.EncryptedVerifierHash = blob.read_shift(16);
-	return o;
-}
+//function parse_RC4CryptoHeader(blob, length) {
+//	var o = {};
+//	var vers = o.EncryptionVersionInfo = parse_CRYPTOVersion(blob, 4); length -= 4;
+//	if(vers.Minor != 2) throw new Error('unrecognized minor version code: ' + vers.Minor);
+//	if(vers.Major > 4 || vers.Major < 2) throw new Error('unrecognized major version code: ' + vers.Major);
+//	o.Flags = blob.read_shift(4); length -= 4;
+//	var sz = blob.read_shift(4); length -= 4;
+//	o.EncryptionHeader = parse_EncryptionHeader(blob, sz); length -= sz;
+//	o.EncryptionVerifier = parse_EncryptionVerifier(blob, length);
+//	return o;
+//}
+///* [MS-OFFCRYPTO] 2.3.6.1 RC4 Encryption Header */
+//function parse_RC4Header(blob) {
+//	var o = {};
+//	var vers = o.EncryptionVersionInfo = parse_CRYPTOVersion(blob, 4);
+//	if(vers.Major != 1 || vers.Minor != 1) throw 'unrecognized version code ' + vers.Major + ' : ' + vers.Minor;
+//	o.Salt = blob.read_shift(16);
+//	o.EncryptedVerifier = blob.read_shift(16);
+//	o.EncryptedVerifierHash = blob.read_shift(16);
+//	return o;
+//}
 
 /* [MS-OFFCRYPTO] 2.3.7.1 Binary Document Password Verifier Derivation */
 function crypto_CreatePasswordVerifier_Method1(Password) {
@@ -8765,18 +8765,18 @@ function parse_XORObfuscation(blob, length, opts, out) {
 }
 
 /* 2.4.117 */
-function parse_FilePassHeader(blob, length, oo) {
-	var o = oo || {}; o.Info = blob.read_shift(2); blob.l -= 2;
-	if(o.Info === 1) o.Data = parse_RC4Header(blob, length);
-	else o.Data = parse_RC4CryptoHeader(blob, length);
-	return o;
-}
-function parse_FilePass(blob, length, opts) {
-	var o = ({ Type: opts.biff >= 8 ? blob.read_shift(2) : 0 }); /* wEncryptionType */
-	if(o.Type) parse_FilePassHeader(blob, length-2, o);
-	else parse_XORObfuscation(blob, opts.biff >= 8 ? length : length - 2, opts, o);
-	return o;
-}
+//function parse_FilePassHeader(blob, length, oo) {
+//	var o = oo || {}; o.Info = blob.read_shift(2); blob.l -= 2;
+//	if(o.Info === 1) o.Data = parse_RC4Header(blob, length);
+//	else o.Data = parse_RC4CryptoHeader(blob, length);
+//	return o;
+//}
+//function parse_FilePass(blob, length, opts) {
+//	var o = ({ Type: opts.biff >= 8 ? blob.read_shift(2) : 0 }); /* wEncryptionType */
+//	if(o.Type) parse_FilePassHeader(blob, length-2, o);
+//	else parse_XORObfuscation(blob, opts.biff >= 8 ? length : length - 2, opts, o);
+//	return o;
+//}
 
 
 var RTF = (function() {
@@ -18698,7 +18698,7 @@ var XLSRecordEnum = {
 0x0029: { n:"BottomMargin", f:parse_Xnum },
 0x002a: { n:"PrintRowCol", f:parsebool },
 0x002b: { n:"PrintGrid", f:parsebool },
-0x002f: { n:"FilePass", f:parse_FilePass },
+// 0x002f: { n:"FilePass", f:parse_FilePass },
 0x0031: { n:"Font", f:parse_Font },
 0x0033: { n:"PrintSize", f:parseuint16 },
 0x003c: { n:"Continue" },
